@@ -1,2 +1,0 @@
-# aiinsurance
-Репо для AdeptInsurance
