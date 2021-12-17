@@ -99,6 +99,8 @@ model_test = ClassificationModel('bert', 'SvyatoslavA/model_awara_text', use_cud
 
 input_files = get_dir_content(src_path)
 print(input_files)
+files_total = len(input_files)
+files_pross = 0
 for full_file_name, extension in input_files:
     #print(full_file_name)
     file_name = os.path.basename(full_file_name)
@@ -116,9 +118,13 @@ for full_file_name, extension in input_files:
             df.to_csv(path_out, index=False, quotechar='"')
             
             put_log(url_logging, msg_template, state_outer, "Прогноз выполнен {}".format(file_name))
+            files_pross += 1
     except Exception as ex:
         print(ex)
         put_log(url_logging, msg_template, state_outer, "Ошибка прогнозирования {}: {}".format(file_name, ex))
+
+if (files_pross == 0):
+    raise Exception('Отсутствуют файлы для прогнозирования')
 
 # COMMAND ----------
 
