@@ -14,6 +14,7 @@ from os.path import isfile, isdir, join
 
 # COMMAND ----------
 
+# test
 ## define path and mount to cluster
 ## Обратить внимание:
 # 1. pointer_folder - следует формировать с учетом полного пути к папке с учетом родительских подпапок
