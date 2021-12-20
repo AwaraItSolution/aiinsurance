@@ -16,7 +16,7 @@ import pdfminer.high_level
 # COMMAND ----------
 
 container = "adept"
-staccount = "bruweadls001"
+staccount = "bruwe60001adls"
 base_folder = "UDL/Internal Sources/Manual Files/Agreements/"
 landed_path = "Landed/"
 converted_path = "Converted/"

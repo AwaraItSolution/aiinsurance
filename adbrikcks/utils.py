@@ -24,10 +24,10 @@ def createIfNotExists(path):
 # 2. Если по пути монтирования уже есть папка, которая смонтирована с другим хранилищем, то сначала нужно отмонтировать старое хранилище. Например, к папке rawdata был примонтировано Blob Storage, затем эту же папку хотим примонтировать к Data Lake хранилищу.
 def define_path_and_mount(container, staccount):
     print("define_path_and_mount: container-{}, staccount-{}".format(container, staccount))
-    sp_clientId = "465f0038-39af-4f0c-9e40-8dbfbd99936f"
-    sp_tenantId = "72162faa-c4d3-4ed6-89bd-a37642170063"
+    sp_clientId = "187061c5-6f3d-4436-b5ec-534e0c696f57"
+    sp_tenantId = "a74eaa7d-f184-42c1-bbc8-e7ff2263995c"
     db_scope_name = "scope-adept"
-    db_keyvault_name = "secret-adept-4-adls-databricks"
+    db_keyvault_name = "secret-for-adls-databricks"
     db_endpoint = "https://login.microsoftonline.com/{}/oauth2/token".format(sp_tenantId)
     
     uri_adls = "abfss://{}@{}.dfs.core.windows.net/".format(container, staccount)    

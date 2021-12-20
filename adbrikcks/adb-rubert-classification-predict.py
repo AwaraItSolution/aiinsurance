@@ -22,7 +22,7 @@ logger = logging.getLogger('pyspark')
 # COMMAND ----------
 
 container = "adept"
-staccount = "bruweadls001"
+staccount = "bruwe60001adls"
 base_folder = "UDL/Internal Sources/Manual Files/Agreements/"
 converted_path = "Converted/"
 processed_path = "Processed/"
