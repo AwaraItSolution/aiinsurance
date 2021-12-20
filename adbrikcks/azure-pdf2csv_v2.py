@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run "./utils"
+#%run "./utils"
 
 # COMMAND ----------
 
@@ -21,8 +21,8 @@ base_folder = "UDL/Internal Sources/Manual Files/Agreements/"
 landed_path = "Landed/"
 converted_path = "Converted/"
 key_directory = "2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3"
-url_logging = 'https://fn-upload-file-to-adls.azurewebsites.net/api/QueueRequest?code=DEbXSIGQF1WT9HYB8epmymzw5USPFDK5/kbvi1ph4vbx9Ww60y6y2w==&command=put&key-dir=2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3'
-msg_template = "{\"state\": \"$state\",\"message\":\"$message\"}"
+url_logging = 'https://bruwe-fs-d-60001-func-forecast.azurewebsites.net/api/QueueRequest?code=Z6wZwValDaFpWaCOT5zjela9f7Gxqs0Mg5lhxRrd2rmgRu4EzrqRnw==&command=put&key-dir=2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3'
+msg_template = "{\"state\": $state,\"message\":\"$message\"}"
 state_outer = "40"
 
 try:
@@ -195,6 +195,10 @@ def save_file(paragraphs, full_path_file):
 
         for key in paragraphs:
             writer.writerow({fieldnames[0]: key, fieldnames[1]: paragraphs[key], fieldnames[2]: '', fieldnames[3]: ''})
+
+# COMMAND ----------
+
+# MAGIC %run "./utils"
 
 # COMMAND ----------
 

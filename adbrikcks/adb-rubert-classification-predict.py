@@ -1,8 +1,4 @@
 # Databricks notebook source
-# MAGIC %run "./utils"
-
-# COMMAND ----------
-
 import logging
 logging.getLogger("py4j").setLevel(logging.INFO)
 logging.getLogger('pyspark').setLevel(logging.ERROR)
@@ -11,7 +7,7 @@ logger = logging.getLogger('pyspark')
 # COMMAND ----------
 
 !pip install mlflow
-#!pip install --upgrade pip
+!pip install --upgrade pip
 !pip install transformers==4.12.5
 !pip install simpletransformers==0.63.3
 !pip install tensorboardX==2.4
@@ -27,8 +23,8 @@ base_folder = "UDL/Internal Sources/Manual Files/Agreements/"
 converted_path = "Converted/"
 processed_path = "Processed/"
 key_directory  = "2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3"
-url_logging = 'https://fn-upload-file-to-adls.azurewebsites.net/api/QueueRequest?code=DEbXSIGQF1WT9HYB8epmymzw5USPFDK5/kbvi1ph4vbx9Ww60y6y2w==&command=put&key-dir=2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3'
-msg_template = "{\"state\": \"$state\",\"message\":\"$message\"}"
+url_logging = 'https://bruwe-fs-d-60001-func-forecast.azurewebsites.net/api/QueueRequest?code=Z6wZwValDaFpWaCOT5zjela9f7Gxqs0Mg5lhxRrd2rmgRu4EzrqRnw==&command=put&key-dir=2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3'
+msg_template = "{\"state\": $state,\"message\":\"$message\"}"
 state_outer = "55"
 
 try:
@@ -67,6 +63,10 @@ try:
     state_outer = dbutils.widgets.get("stateOuter")
 except:
     pass
+
+# COMMAND ----------
+
+# MAGIC %run "./utils"
 
 # COMMAND ----------
 
