@@ -80,7 +80,6 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import f1_score, accuracy_score, roc_auc_score
 import requests
-#import my_utils
 
 print("Main forecasting")
 base_path = define_path_and_mount(container, staccount)
@@ -93,7 +92,6 @@ createIfNotExists(dst_path)
 
 #model_test = ClassificationModel('bert', 'https://github.com/AwaraItSolution/ADBricks-MLFlows', use_cuda = False) # использование CPU
 model_test = ClassificationModel('bert', 'SvyatoslavA/model_awara_text', use_cuda = False) # использование GPU
-    
 
 # COMMAND ----------
 
@@ -124,10 +122,32 @@ for full_file_name, extension in input_files:
         put_log(url_logging, msg_template, state_outer, "Ошибка прогнозирования {}: {}".format(file_name, ex))
 
 if (files_pross == 0):
-    raise Exception('Отсутствуют файлы для прогнозирования')
+    raise Exception('Отсутствуют данные для прогнозирования')
 
 # COMMAND ----------
 
-#print(src_path)
-#dbutils.fs.ls('/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Models/')
-#client = MlflowClient()
+zipfile.is_zipfile('/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Processed/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3(6).zip')
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Генерация одного файла результатов
+# MAGIC 1. Создаем zip архив во временной папке на локальном диске /tmp, т.к. в смонтированный диск пишут одновременно ноды всего кластера, а библиотека zipfile не поддерживает параллельную запись
+# MAGIC 2. Созданный архив копируем из локальной папки в примонтированную папку озера dst_path с обработанными файлами
+
+# COMMAND ----------
+
+import zipfile
+import os
+path_zip = os.path.join('/tmp', key_directory) + '.zip'
+print(path_zip)
+with zipfile.ZipFile(path_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    path_data_dbfs = '/dbfs' + dst_path
+    for root, dirs, files in os.walk(path_data_dbfs):
+        for file in files:
+            fullpath = os.path.join(path_data_dbfs, file)
+            if (not zipfile.is_zipfile(fullpath)):
+                print("archived: {}".format(fullpath))
+                zipf.write(filename=fullpath, arcname=os.path.relpath(fullpath, os.path.join(path_data_dbfs, '..')))
+                put_log(url_logging, msg_template, state_outer, "{} добавлен к архиву".format(file))
+dbutils.fs.cp("file:{}".format(path_zip), dst_path)
