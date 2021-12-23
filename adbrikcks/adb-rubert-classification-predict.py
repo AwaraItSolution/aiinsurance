@@ -126,7 +126,7 @@ if (files_pross == 0):
 
 # COMMAND ----------
 
-zipfile.is_zipfile('/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Processed/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3(6).zip')
+#zipfile.is_zipfile('/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Processed/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3(6).zip')
 
 # COMMAND ----------
 
