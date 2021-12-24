@@ -1,19 +1,19 @@
 # Databricks notebook source
+!pip install --upgrade pip
+!pip install mlflow
+!pip install transformers==4.12.5
+!pip install simpletransformers==0.63.3
+!pip install tensorboardX==2.4
+!pip install tensorflow==2.6.2
+!pip install torch==1.7.1
+#!pip install torch==1.7.1+cu110
+
+# COMMAND ----------
+
 import logging
 logging.getLogger("py4j").setLevel(logging.INFO)
 logging.getLogger('pyspark').setLevel(logging.ERROR)
 logger = logging.getLogger('pyspark')
-
-# COMMAND ----------
-
-!pip install mlflow
-!pip install --upgrade pip
-!pip install transformers==4.12.5
-!pip install simpletransformers==0.63.3
-!pip install tensorboardX==2.4
-#!pip install torch==1.7.1+cu110
-!pip install tensorflow==2.6.2
-!pip install torch==1.7.1
 
 # COMMAND ----------
 
@@ -67,6 +67,11 @@ except:
 # COMMAND ----------
 
 # MAGIC %run "./utils"
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Загрузка модели
 
 # COMMAND ----------
 
