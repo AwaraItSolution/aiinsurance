@@ -37,20 +37,8 @@ def summary(text):
 
 # COMMAND ----------
 
-# Это датасет для проверки работы скрипта, можно удалить 
-df = pd.read_csv('пример для аннотации1.csv', delimiter=';', encoding='utf8')
-df['text'][3]
-
-# COMMAND ----------
-
-# применяем функцию аннотирования на df c не нулевыми классами
-# Аннотирование работает для текста с 2 и более предложениями
-df['annotation'] = list(map(summary, df['text'].values.tolist()))
-
-# COMMAND ----------
-
-df['annotation']
-
-# COMMAND ----------
-
-!pip freeze
+def annotate(dframe):
+    df_4annotation = dframe[dframe['result']!=0]
+    df_4annotation['text'].values.tolist()
+    dframe.loc[df_4annotation.index, 'annotation'] = list(map(summary, df_4annotation['text'].values.tolist()))
+    return dframe

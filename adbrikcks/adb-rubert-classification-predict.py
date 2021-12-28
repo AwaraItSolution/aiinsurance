@@ -100,6 +100,10 @@ model_test = ClassificationModel('bert', 'SvyatoslavA/model_awara_text', use_cud
 
 # COMMAND ----------
 
+# MAGIC %run "./annotation"
+
+# COMMAND ----------
+
 input_files = get_dir_content(src_path)
 print(input_files)
 files_total = len(input_files)
@@ -116,7 +120,7 @@ for full_file_name, extension in input_files:
             test_text = df['text'].values.tolist()
             predictions = model_test.predict(test_text)
             df['result'] = predictions[0]
-
+            #df = annotate(df)
             path_out = '/dbfs' + os.path.join(dst_path, file_name)
             df.to_csv(path_out, index=False, quotechar='"')
             
@@ -127,11 +131,8 @@ for full_file_name, extension in input_files:
         put_log(url_logging, msg_template, state_outer, "Ошибка прогнозирования {}: {}".format(file_name, ex))
 
 if (files_pross == 0):
-    raise Exception('Отсутствуют данные для прогнозирования')
-
-# COMMAND ----------
-
-#zipfile.is_zipfile('/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Processed/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3(6).zip')
+    put_log(url_logging, msg_template, state_outer, "Отсутствуют данные для прогнозирования")
+    raise Exception("Отсутствуют данные для прогнозирования")
 
 # COMMAND ----------
 

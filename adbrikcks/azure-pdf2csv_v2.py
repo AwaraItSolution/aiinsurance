@@ -214,20 +214,28 @@ dst_ext  = '.csv'
 
 ingest_files = get_dir_content(src_path)
 print(ingest_files)
+i = 0
 for full_file_name, extension in ingest_files:
     #print(full_file_name)
     file_name = os.path.basename(full_file_name)
     try:
         if extension == 'pdf':
             paragraphs= convert_pdf(full_file_name)
+            print("paragraphs: ".format(len(paragraphs)))
             if len(paragraphs) > 0:
                 #file_name = os.path.basename(full_file_name)
+                i+=1
                 name, extension = os.path.splitext(file_name)
                 save_file(paragraphs, '/dbfs' + os.path.join(dst_path, name + dst_ext))
                 put_log(url_logging, msg_template, state_outer, "Файл: {} преобразован в csv".format(file_name))
+            else:
+                put_log(url_logging, msg_template, state_outer, "Файл: {} не конвертирован".format(file_name))
     except Exception as ex:
         print(ex)
         put_log(url_logging, msg_template, state_outer, "Ошибка преобразования файла {}: {}".format(file_name, ex))
+if (i==0):
+    put_log(url_logging, msg_template, state_outer, "Данные не были преобразованы")
+    raise Exception("Данные не были преобразованы")
 
 # COMMAND ----------
 
