@@ -109,7 +109,7 @@ print(input_files)
 files_total = len(input_files)
 files_pross = 0
 for full_file_name, extension in input_files:
-    #print(full_file_name)
+    print(full_file_name)
     file_name = os.path.basename(full_file_name)
     try:
         if extension == 'csv':
@@ -119,16 +119,20 @@ for full_file_name, extension in input_files:
         
             test_text = df['text'].values.tolist()
             predictions = model_test.predict(test_text)
-            df['result'] = predictions[0]
-            #df = annotate(df)
-            path_out = '/dbfs' + os.path.join(dst_path, file_name)
-            df.to_csv(path_out, index=False, quotechar='"')
             
-            put_log(url_logging, msg_template, state_outer, "Прогноз выполнен {}".format(file_name))
+            df['result'] = predictions[0]
+            #df['annotation'] = annotate(df)
+            
+            path_out = '/dbfs' + os.path.join(dst_path, file_name)
+            df.to_csv(path_out, index=True, quotechar='"')
+            
+            put_log(url_logging, msg_template, state_outer, "Прогноз выполнен: {}".format(file_name))
             files_pross += 1
+        else:
+            put_log(url_logging, msg_template, state_outer, "Файл пропущен: {}".format(file_name))
     except Exception as ex:
         print(ex)
-        put_log(url_logging, msg_template, state_outer, "Ошибка прогнозирования {}: {}".format(file_name, ex))
+        put_log(url_logging, msg_template, state_outer, "Ошибка прогнозирования: {}: {}".format(file_name, ex))
 
 if (files_pross == 0):
     put_log(url_logging, msg_template, state_outer, "Отсутствуют данные для прогнозирования")
