@@ -124,7 +124,7 @@ for full_file_name, extension in input_files:
             #df['annotation'] = annotate(df)
             
             path_out = '/dbfs' + os.path.join(dst_path, file_name)
-            df.to_csv(path_out, index=True, quotechar='"')
+            df.to_csv(path_out, index=True, index_label='id', quotechar='"')
             
             put_log(url_logging, msg_template, state_outer, "Прогноз выполнен: {}".format(file_name))
             files_pross += 1
