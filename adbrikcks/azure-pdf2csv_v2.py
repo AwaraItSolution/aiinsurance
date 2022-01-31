@@ -81,7 +81,7 @@ def clear_paragraph(paragraph):
     if result:
         paragraph = paragraph[result.end():]
 
-    # удалить последний симвой параграфа, если это точка
+    # удалить последний символ параграфа, если это точка
     if paragraph[len(paragraph)-1] == delimiter:
         paragraph = paragraph[:-1]    
         
@@ -104,10 +104,31 @@ def get_paragrapf_eq(text):
             offset -= 1
 
     return sum_eq
+  
+def is_paragraph(pointPrev, pointCurr):
+    if (pointCurr > pointPrev or abs(pointCurr-pointPrev) < 693147.2):
+        return True
+    else: 
+        return False
+    
+def is_chapter(chapterPrev, chapterCurr):
+    heapPrev = 0
+    heapCurr = 0
+    pos = chapterPrev.find('.')
+    if (pos > 0):
+        heapPrev = int(chapterPrev[:pos])
+    pos = chapterCurr.find('.')
+    if (pos > 0):
+        heapCurr = int(chapterCurr[:pos])
+    if (heapPrev == heapCurr or heapPrev+1 == heapCurr):
+        return True
+    else:
+        return False
+
 
 # COMMAND ----------
 
-#convert_pdf('/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Гайде_Правила_страхования_грузов.pdf')
+#convert_pdf('/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Landed/2021-12-13-12-49-23-437b2a97-41e7-430e-85e3-666e592b94c3/Правила страхования грузов Зетта.pdf')
 #with open("/dbfs/mnt/adept/UDL/Internal Sources/Manual Files/Agreements/Гайде_Правила_страхования_грузов.pdf", 'r') as f:
 #  print('Ok')
 
@@ -119,6 +140,10 @@ def convert_pdf(source_file):
         text = pdfminer.high_level.extract_text(file)
 
     raw_text = text.replace('\x0c','')
+    
+    # вырезаем двойные кавычки внутри текста, чтобы не создавались неучтенные столбцы
+    raw_text = text.replace('"','')
+    
     # вырезаем номера страниц
     pattern = re.compile(r'(\n[0-9]+\n)')
     raw_text = re.sub(pattern, '', raw_text)
@@ -163,32 +188,103 @@ def convert_pdf(source_file):
                 # в начале строки нашли номер параграфа
                 parCurr = clear_paragraph(matchP.group())
                 parEqCurr = get_paragrapf_eq(parCurr)
-                #print('paragrapf:{}\tcurrent:{}\tlast:{}'.format(parCurr, parEqCurr, parEqLast))                            
-                #print(parCurr)
-                # в справочнике номеров параграфов, считанный параграф отсутствует
-                #if (parEqCurr >= parEqLast and parCurr != parLast):
-                if (parCurr != parLast): # сделал, чтобы принимать параграфы, которые конвертировались из pdf в неправильном порядке, например сначала 16.2 а потом 16.1
-     #               print(parCurr)
+                #print('parCurr:{} parEqCurr:{} parLast:{} parEqLast:{}'.format(parCurr, parEqCurr, parLast, parEqLast))
+                # Новый параграф отличается от предыдущего И не более, чем на заданную величину
+                if (parCurr != parLast and is_paragraph(parEqLast, parEqCurr) and is_chapter(parLast, parCurr)):
+                    #print("Новый параграф:{}".format(parCurr))
                     paragrDict[parCurr] = line[matchP.end():].lstrip()
                     parLast = parCurr
                     parEqLast = parEqCurr
-
-                else:
-                    parLast = ''
-
-                # в начале строки НЕ нашли номер параграфа
+                #else:
+                #    paragrDict[parLast] += line
             else:
-                # если наполняем параграф
-                if (parLast in paragrDict):
+                # в начале строки НЕ нашли номер параграфа
+                #if (parLast in paragrDict):
+                if (len(parLast) > 0):
                     #str_len = len(paragrDict.get(parLast))
-                    #if (str_len > 0 & str_len < paragrMax):
                     paragrDict[parLast] += line
     return paragrDict
 
 # COMMAND ----------
 
+def convert_pdf_ex(source_file):
+    print("convert_pdf: {}".format(source_file))
+    with open(source_file, 'rb') as file:
+        text = pdfminer.high_level.extract_text(file)
+
+    #print(text)
+    # вырезаем номера страниц, спец.символ 0c, кавычки
+    pattern = re.compile(r'(\n[0-9]+\s{0,}\n|\x0c|")')
+    raw_text = re.sub(pattern, '', text)
+    
+    # заменяем множественные переводы строки на один перевод строки
+    pattern = re.compile(r'(\n){2,}')
+    raw_text = re.sub(pattern, '\n', raw_text)
+
+    # поиск 2-х и более пробелов
+    pattern = re.compile(r'( ){2,}')
+    raw_text = re.sub(pattern, ' ', raw_text)
+    #print (raw_text)    
+
+    list_text = re.split('\n', raw_text)
+    #print (list_text)
+    
+    patChapter   = re.compile(r'(.){0,1}[0-9]+[.][^0-9]')
+
+    patParagraph = re.compile(r'(.){0,1}([0-9]+[.][0-9]+[.0-9]{0,})')
+
+    paragrMax = 512
+    paragrDict={}
+    parLast = ''
+    parCurr = ''
+    parEqLast = 0
+    #parEqCurr = 0
+    bad_paragraph = False
+    bad_count = 0
+
+    for line in list_text:
+        #print(line)
+        matchC =re.match(patChapter, line)
+        #print("matchC:{}".format(matchC))
+        # отделяем название разделов 
+        if not matchC:
+            matchP = re.match(patParagraph, line)
+            #print("matchP:{}".format(matchP))
+            # ищем параграфы
+            if matchP:
+                #print("matchP:{}".format(matchP))
+                # в начале строки нашли номер параграфа
+                parCurr = clear_paragraph(matchP.group())
+                #parEqCurr = get_paragrapf_eq(parCurr)
+                #print('parCurr:{} parEqCurr:{} parLast:{} parEqLast:{}'.format(parCurr, parEqCurr, parLast, parEqLast))                            
+                # в справочнике номеров параграфов, считанный параграф отсутствует
+                #if (parEqCurr >= parEqLast and parCurr != parLast): #is_paragraph(parEqLast, parEqCurr) and
+                if (parCurr != parLast and  is_chapter(parLast, parCurr)):
+                    bad_paragraph = False
+                    bad_count = 0
+                    #print("Новый параграф:{}".format(parCurr))
+                    paragrDict[parCurr] = line[matchP.end():].lstrip()
+                    parLast = parCurr
+                    #parEqLast = parEqCurr
+                else: # новый параграф не прошел проверку, установить флаг ошибки. Если больше 3-х ошибок парсинг прекращаем
+                    if (bad_count >= 3):
+                        break
+                    else:
+                        bad_paragraph = True
+                        bad_count += 1
+
+            # в начале строки НЕ нашли номер параграфа
+            else:
+                # если наполняем параграф
+                if (len(parLast) > 0 and not bad_paragraph):
+                    paragrDict[parLast] += line
+                    #print("paragraph:{}".format(paragrDict[parLast]))
+    return paragrDict
+
+# COMMAND ----------
+
 def save_file(paragraphs, full_path_file):
-    print("save_file: {}".format(full_path_file))
+    #print("save_file: {}".format(full_path_file))
     with open(full_path_file, 'w', newline='') as f:
         fieldnames = ['point','text','result','annotation']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -222,8 +318,8 @@ for full_file_name, extension in ingest_files:
     file_name = os.path.basename(full_file_name)
     try:
         if extension == 'pdf':
-            paragraphs= convert_pdf(full_file_name)
-            print("paragraphs: ".format(len(paragraphs)))
+            paragraphs= convert_pdf_ex(full_file_name)
+            #print("paragraphs: ".format(len(paragraphs)))
             if len(paragraphs) > 0:
                 #file_name = os.path.basename(full_file_name)
                 i+=1
