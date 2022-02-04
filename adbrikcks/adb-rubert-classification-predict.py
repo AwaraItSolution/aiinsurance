@@ -116,7 +116,8 @@ for full_file_name, extension in input_files:
             df = pd.read_csv(full_file_name, quotechar='"')
             # удаляем строки, содержащие null в столбце 'text'
             df.drop(index=df.loc[df['text'].isna()].index.tolist(), inplace=True)
-        
+            # если у параграфа отсутствует наименование раздела, вставить пробел
+            dfd.loc[dfd['chapter'].isna(),'chapter']=' '
             test_text = df['text'].values.tolist()
             predictions = model_test.predict(test_text)
             
