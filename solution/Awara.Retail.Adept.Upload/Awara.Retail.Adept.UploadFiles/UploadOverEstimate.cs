@@ -41,6 +41,7 @@ namespace Awara.Retail.Adept.UploadFiles
                 }
                 else if (method == "GET")
                 {
+
                     string key_dir = req.Query["key-dir"];
 
                     if (string.IsNullOrEmpty(key_dir))
