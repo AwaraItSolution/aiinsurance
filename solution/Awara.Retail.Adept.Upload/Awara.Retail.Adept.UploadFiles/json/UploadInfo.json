@@ -1,0 +1,45 @@
+{
+  "user": "user@user.com",
+  "files": [
+    {
+      "filename": "Правила Альфастрахование 049 В 11.01.05.pdf",
+      "companyId": 2,
+      "companyName": "Альфастрахование",
+      "insuranceId": 8,
+      "insuranceName": "Страхование грузов",
+      "expireDate": "2023-01-01T00:00:00.000Z"
+    },
+    {
+      "filename": "Правила страхования грузов для транспортных операторов (приказ 37).pdf",
+      "companyId": 953,
+      "companyName": "Капитал-Полис",
+      "insuranceId": 8,
+      "insuranceName": "Страхование грузов",
+      "expireDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "filename": "Правила страхования грузов Пари.pdf",
+      "companyId": 701,
+      "companyName": "Пари",
+      "insuranceId": 8,
+      "insuranceName": "Страхование грузов",
+      "expireDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "filename": "Правила страхования грузов Совкомбанк ред. 3.20 (1).pdf",
+      "companyId": 923,
+      "companyName": "Совкомбанк",
+      "insuranceId": 8,
+      "insuranceName": "Страхование грузов",
+      "expireDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "filename": "Правила страхования грузов Зетта.pdf",
+      "companyId": 947,
+      "companyName": "ЗЕТТА СТРАХОВАНИЕ",
+      "insuranceId": 8,
+      "insuranceName": "Страхование грузов",
+      "expireDate": "2022-01-26T11:13:13.673Z"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "companyId": 2,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T08:32:16",
+    "user": "user@user.com",
+    "pid": "2022-02-11-08-31-33-af5c98af-efe2-44b5-b234-16c58768e0c5",
+    "fullname": "Правила Альфастрахование 049 В 11.01.05.pdf",
+    "dateExpiration": "2023-01-01T00:00:00"
+  },
+  {
+    "companyId": 953,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T08:32:16",
+    "user": "user@user.com",
+    "pid": "2022-02-11-08-31-33-af5c98af-efe2-44b5-b234-16c58768e0c5",
+    "fullname": "Правила страхования грузов для транспортных операторов (приказ 37).pdf",
+    "dateExpiration": "2024-01-01T00:00:00"
+  },
+  {
+    "companyId": 701,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T08:32:16",
+    "user": "user@user.com",
+    "pid": "2022-02-11-08-31-33-af5c98af-efe2-44b5-b234-16c58768e0c5",
+    "fullname": "Правила страхования грузов Пари.pdf",
+    "dateExpiration": "2024-01-01T00:00:00"
+  },
+  {
+    "companyId": 923,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T08:32:16",
+    "user": "user@user.com",
+    "pid": "2022-02-11-08-31-33-af5c98af-efe2-44b5-b234-16c58768e0c5",
+    "fullname": "Правила страхования грузов Совкомбанк ред. 3.20 (1).pdf",
+    "dateExpiration": "2024-01-01T00:00:00"
+  },
+  {
+    "companyId": 947,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T08:32:16",
+    "user": "user@user.com",
+    "pid": "2022-02-11-08-31-33-af5c98af-efe2-44b5-b234-16c58768e0c5",
+    "fullname": "Правила страхования грузов Зетта.pdf",
+    "dateExpiration": "2022-01-26T00:00:00"
+  },
+  {
+    "companyId": 2,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T09:40:16.4933333",
+    "user": "user@user.com",
+    "pid": "2022-02-11-09-39-35-39b1d85c-c521-4d24-8e35-6f52e548d345",
+    "fullname": "Правила Альфастрахование 049 В 11.01.05.pdf",
+    "dateExpiration": "2023-01-01T00:00:00"
+  },
+  {
+    "companyId": 953,
+    "insuranceId": 8,
+    "dateImport": "2022-02-11T09:40:16.4933333",
+    "user": "user@user.com",
+    "pid": "2022-02-11-09-39-35-39b1d85c-c521-4d24-8e35-6f52e548d345",
+    "fullname": "Правила страхования грузов для транспортных операторов (приказ 37).pdf",
+    "dateExpiration": "2024-01-01T00:00:00"
+  }
+]
