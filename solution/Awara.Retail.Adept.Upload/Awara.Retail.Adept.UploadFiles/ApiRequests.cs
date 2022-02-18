@@ -19,7 +19,7 @@ namespace Awara.Retail.Adept.UploadFiles
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
+            //string name = req.Query["name"];
             IActionResult result;
             try
             {

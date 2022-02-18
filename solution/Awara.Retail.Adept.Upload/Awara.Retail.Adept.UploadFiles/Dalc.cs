@@ -22,7 +22,8 @@ namespace Awara.Retail.Adept.UploadFiles
             public string chapter { get; set; }
             public string paragraph { get; set; }
             public string textHash { get; set; }
-            public int score { get; set; }
+            public int scoreB { get; set; }
+            public int scoreM { get; set; }
             public string user { get; set; }
         }
         public class AgreementFile
@@ -94,7 +95,8 @@ namespace Awara.Retail.Adept.UploadFiles
                 cmd.Parameters.Add("@chapter", SqlDbType.NVarChar).Value = estimate.chapter;
                 cmd.Parameters.Add("@paragraph", SqlDbType.NVarChar).Value = estimate.paragraph;
                 cmd.Parameters.Add("@textHash", SqlDbType.NVarChar).Value = estimate.textHash;
-                cmd.Parameters.Add("@score", SqlDbType.Int).Value = estimate.score;
+                cmd.Parameters.Add("@scoreB", SqlDbType.Int).Value = estimate.scoreB;
+                cmd.Parameters.Add("@scoreM", SqlDbType.Int).Value = estimate.scoreM;
                 cmd.Parameters.Add("@user", SqlDbType.NVarChar).Value = estimate.user;
 
                 connection.Open();
